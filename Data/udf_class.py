@@ -73,3 +73,30 @@ class UDFClass(object):
             return False
         return True
 
+    def getUDFByIdx(self, class_idx, class_udf_idx):
+        if class_idx >= len(self.class_name_list):
+            print("[WARN][UDFClass::getClassName]")
+            print("\t class_idx out of range! use \% to filter as default!")
+            class_idx = class_idx % len(self.class_name_list)
+
+        class_name = self.class_name_list[class_idx]
+        class_udf_name_list = self.class_udf_name_list_list[class_idx]
+
+        if class_udf_idx >= len(class_udf_name_list):
+            print("[WARN][UDFClass::getSourceClassUDFFilePath]")
+            print("\t class_udf_idx out of range! use \% to filter as default!")
+            class_udf_idx = class_udf_idx % len(class_udf_name_list)
+
+        class_udf_name = class_udf_name_list[class_udf_idx]
+
+        udf = self.class_udf_dict[class_name][class_udf_name]
+        return udf
+
+    def getSourceClassUDFFilePath(self, class_idx, class_udf_idx):
+        udf = self.getUDFByIdx(class_idx, class_udf_idx)
+        return udf.getSourceUDFFilePath()
+
+    def getClassUDFFilePath(self, class_idx, class_udf_idx, udf_idx):
+        udf = self.getUDFByIdx(class_idx, class_udf_idx)
+        return udf.getUDFFilePath(udf_idx)
+
